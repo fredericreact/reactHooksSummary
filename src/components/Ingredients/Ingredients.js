@@ -23,6 +23,11 @@ const Ingredients = () => {
     })
   }, [])
 
+
+  const filteredIngredientsHandler = filteredIngredients => {
+    setUserIngredients(filteredIngredients)
+  }
+
   const addIngredientHandler = ingredient => {
 
     fetch('https://react-http-26861-default-rtdb.firebaseio.com/ingredients.json', {
@@ -55,7 +60,7 @@ const Ingredients = () => {
       <IngredientForm onAddIngredient={addIngredientHandler}/>
 
       <section>
-        <Search />
+        <Search onLoadedIngredients={filteredIngredientsHandler}/>
         <IngredientList ingredients={userIngredients} onRemoveItem={removeIngredientHandler}/>
       </section>
     </div>
