@@ -5,7 +5,7 @@ import './Search.css';
 
 const Search = React.memo(props => {
 
-  const {onLoadIngredients} = props;
+  const {onLoadedIngredients} = props;
 
   const [enteredFilter, setEnteredFilter] = useState('')
 
@@ -16,6 +16,7 @@ const Search = React.memo(props => {
     fetch('https://react-http-26861-default-rtdb.firebaseio.com/ingredients.json'+query)
     .then(response => response.json())
     .then(responseData => {
+      console.log(responseData)
       const loadedIngredients = [];
       for (const key in responseData) {
         loadedIngredients.push({
@@ -24,11 +25,11 @@ const Search = React.memo(props => {
           amount: responseData[key].amount
         })
       }
-      onLoadIngredients(loadedIngredients)
+      onLoadedIngredients(loadedIngredients)
     })
 
 
-  }, [enteredFilter, onLoadIngredients])
+  }, [enteredFilter, onLoadedIngredients])
 
   return (
     <section className="search">
