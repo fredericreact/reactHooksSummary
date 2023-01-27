@@ -1,5 +1,15 @@
 import {useReducer, useCallback} from 'react'
 
+const initialState = {
+  
+        loading: false, 
+        error:null,
+        data: null,
+        extra: null,
+        identifier: null
+    
+}
+
 const httpReducer = (curhttpState, action) => {
     switch (action.type) {
       case 'SEND':
@@ -8,8 +18,9 @@ const httpReducer = (curhttpState, action) => {
       return {...curhttpState, loading:false, data: action.responseData, extra:action.extra}
       case 'ERROR': 
       return {loading:false, error:action.errorMessage}
-      case 'CLEAR':
-        return {...curhttpState, error: null}
+      case 'CLEAR': 
+        return initialState
+      
       default:
         throw new Error('Should not be reached')
     }
@@ -17,13 +28,9 @@ const httpReducer = (curhttpState, action) => {
   
 
 const useHttp = () => {
-    const [httpState, dispatchHttp] = useReducer(httpReducer, {
-        loading: false, 
-        error:null,
-        data: null,
-        extra: null,
-        identifier: null
-    })
+    const [httpState, dispatchHttp] = useReducer(httpReducer,initialState)
+
+    const clear = useCallback(()=>dispatchHttp({type:'CLEAR'}), [])
 
     const sendRequest = useCallback((url, method,body, reqExtra, reqIdentifier) => {
         dispatchHttp({type:'SEND', identifier: reqIdentifier})
@@ -52,7 +59,8 @@ const useHttp = () => {
         error:httpState.error,
         sendRequest:sendRequest,
         reqExtra: httpState.extra,
-       reqIdentifier: httpState.identifier
+       reqIdentifier: httpState.identifier,
+       clear:clear
     };
 
 }
