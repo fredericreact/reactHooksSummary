@@ -35,8 +35,6 @@ const Search = React.memo(props => {
 
       }
 
-      
-
     }, 500);
 
     
